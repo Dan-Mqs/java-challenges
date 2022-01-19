@@ -19,58 +19,34 @@ Important notes:
 /* imports */
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 
 public class DiagonalDifference {
     
-    /* Method to read the input txt file and return a matrix from its values */
-    public static ArrayList<ArrayList<Integer>> readInputAsMatrix(String fileName) {
-        try {
-            ArrayList<ArrayList<Integer>> matrix = new ArrayList<>();
-            BufferedReader input = new BufferedReader(new FileReader(fileName));
-            String line = input.readLine();
 
-            while(line != null){
-               ArrayList<Integer> matrixLine = new ArrayList<>();
-               String[] values = line.split(" ");
-               for(int i=0; i<values.length; i++){
-                       matrixLine.add(Integer.parseInt(values[i]));
-               }
-               matrix.add(matrixLine);
-               line = input.readLine();
-            }
-            return matrix;
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
-    } 
-    
     /* Method to calculate the matrix's diagonals absolute difference */
-    public static int calcDiagonalsDiff(ArrayList<ArrayList<Integer>> matrix) {
-        int matrixOrder = matrix.size();
-        int primDiagonal = 0;
-        int secDiagonal = 0;
-        
+    public static int calcDiagonalsDiff(String fileName) {
+
         try {
-            for (int i=0; i<matrixOrder; i++){
-                for (int j=0; j<matrixOrder; j++){
-
-                    /* checks if item belongs to the primary diagonal */
-                    if (i == j){ 
-                        primDiagonal += matrix.get(i).get(j);
-                    }
-
-                    /* checks if item belongs to the secondary diagonal */
-                    if ((i+j+2) == (matrixOrder + 1)){
-
-                        secDiagonal += matrix.get(i).get(j);
-                    }
-                }
+            
+            BufferedReader input = new BufferedReader(new FileReader(fileName));
+            
+            String line = input.readLine();
+            String[] lineContent;
+            
+            int countLine = 0;
+            int sum = 0;
+            int size = line.split(" ").length - 1;
+            
+            
+            while (line != null){
+                lineContent = line.split(" ");
+                sum += Integer.parseInt(lineContent[countLine]) - Integer.parseInt(lineContent[size - countLine]);
+                
+                countLine ++;
+                line = input.readLine();
             }
         
-            return Math.abs(primDiagonal - secDiagonal);
+            return Math.abs(sum);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -79,15 +55,10 @@ public class DiagonalDifference {
     
     /* Main method */
     public static void main(String[] args) { 
-        
-        /* reads files */
-        ArrayList<ArrayList<Integer>> matrix_1 = readInputAsMatrix("squareMatrix1.txt");
-        ArrayList<ArrayList<Integer>> matrix_2 = readInputAsMatrix("squareMatrix2.txt");
-        
-        
+
         /* output */
-        System.out.println("Matrix 1 diagonals absolute difference: " + calcDiagonalsDiff(matrix_1));
-        System.out.println("Matrix 2 diagonals absolute difference: " + calcDiagonalsDiff(matrix_2));
+        System.out.println("Matrix 1 diagonals absolute difference: " + calcDiagonalsDiff("squareMatrix1.txt"));
+        System.out.println("Matrix 2 diagonals absolute difference: " + calcDiagonalsDiff("squareMatrix2.txt"));
 
     }
     
